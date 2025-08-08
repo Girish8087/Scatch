@@ -1,0 +1,33 @@
+{
+  "name": "scatch",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Girish Tanaji Yadav",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cross-env DEBUG=development:* npx nodemon app.js\" \"npx tailwindcss -i ./src/input.css -o ./public/stylesheets/output.css --watch\"",
+    "build": "npx tailwindcss -i ./src/input.css -o ./public/stylesheets/output.css --minify"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "config": "^4.1.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "debug": "^4.4.1",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.0",
+    "multer": "^2.0.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0"
+  }
+}

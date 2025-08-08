@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scatch</title>
+  <link rel="shortcut icon" href="../images/Scatch.png" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="/stylesheets/output.css" rel="stylesheet" />
+  <style>
+    .gucci-font {
+      font-family: 'Playfair Display', serif;
+    }
+
+    #flash {
+      position: fixed;
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden relative">
+
+  <% if(addedtocart && addedtocart.length > 0) { %>
+    <% addedtocart.forEach(cart => { %>
+      <div id="flash" class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✅</span>
+            <p class="text-sm font-medium"><%= cart %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <% if(created && created.length > 0) { %>
+    <% created.forEach(create => { %>
+      <div id="flash" class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 animate-bounce z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✅</span>
+            <p class="text-sm font-medium"><%= create %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <% if(loggedIn && loggedIn.length > 0) { %>
+    <% loggedIn.forEach(login => { %>
+      <div id="flash" class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 animate-bounce z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">👋</span>
+            <p class="text-sm font-medium"><%= login %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+
+    <nav class="z-50 bg-white w-full flex items-center justify-between px-6 md:px-10 py-4 border-b-2 fixed top-0 left-0">
+      <h1 class="text-2xl md:text-3xl font-semibold">Shop.</h1>
+      <button id="sidebarToggle" class="md:hidden text-2xl focus:outline-none active:scale-95 transition">☰</button>
+      <div class="hidden md:flex items-center gap-6 font-semibold">
+        <a class="active:scale-95 transition ease-in" href="">Home</a>
+        <a class="active:scale-95 transition ease-in" href="">Products</a>
+        <a class="active:scale-95 transition ease-in" href="/cart"><i class="ri-shopping-cart-line"></i> Cart</a>
+        <div class="flex items-center gap-2">
+          <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-b-cyan-600 active:scale-95 hover:scale-105 transition ease-in">
+            <img class="w-full h-full object-cover" src="https://storyblok-cdn.photoroom.com/f/191576/1200x800/a3640fdc4c/profile_picture_maker_before.webp" alt="" />
+          </div>
+          <a class="active:scale-95 transition ease-in" href="">My account</a>
+        </div>
+        <a class="px-3 py-1 rounded-md bg-red-600 text-white hover:scale-105 active:scale-95 transition ease-in" href="/users/logout">Logout
+          <i class="ri-logout-box-r-line font-light"></i></a>
+      </div>
+    </nav>
+
+    <div id="sidebar" class="fixed top-[72px] left-0 w-64 h-[calc(100vh-72px)] bg-zinc-100 px-6 py-4 flex-col gap-10 text-sm font-semibold transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:flex">
+      <div>
+        <label for="fruit">Sort by:</label>
+        <select class="w-full border border-zinc-300 rounded-md px-2 py-1 mt-1">
+          <option>Popular</option>
+          <option>Discount</option>
+          <option>High to Low</option>
+          <option>Low to High</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a href="">New Collection</a>
+        <a href="">All Products</a>
+        <a href="">Discount Products</a>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a href="">Filter by:</a>
+        <a href="">Availability</a>
+        <a href="">Discount</a>
+      </div>
+    </div>
+  <div data-scroll-container>
+    <div class="pt-[90px] px-6 md:px-10 md:ml-64 min-h-screen">
+      <div id="items-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
+        <% if(products.length > 0) { %>
+          <% products.reverse().forEach(product => { %>
+            <div class="bg-gray-300 h-90 shadow-md hover:scale-101 transition ease-in">
+              <div class="bg-[<%= product.bgcolor %>] w-full h-[70%] p-5">
+                <img class="w-full h-full object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="" />
+              </div>
+              <div style="background-color: <%= product.panelcolor %>;" class="w-full h-[30%] p-5 flex items-center justify-between">
+                <div>
+                  <h1 style="color: <%= product.textcolor %>;" class="text-lg font-semibold"><%= product.name %></h1>
+                  <p style="color: <%= product.textcolor %>;" class="font-semibold">$<%= product.price %>.00</p>
+                  <% if(product.discount !== 0) { %>
+                    <p class="text-sm text-red-500">- $<%= product.discount %> off</p>
+                  <% } %>
+                </div>
+                <a href="/addtocart/<%= product._id %>" class="bg-white h-10 w-10 flex items-center justify-center rounded-full hover:bg-zinc-100 hover:scale-105 transition active:scale-95 cursor-pointer">
+                  <i class="ri-add-line"></i>
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <h1 class="font-semibold text-gray-500">No Products Yet.</h1>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+        multiplier: 1
+      });
+    });
+
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("-translate-x-full");
+    });
+
+    function closeFlash() {
+      document.getElementById('flash').classList.add('opacity-0', 'transition', 'duration-500');
+      setTimeout(() => document.getElementById('flash').remove(), 500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let progress = document.getElementById('progress');
+      progress.style.width = '100%';
+      progress.style.transition = 'width 3s linear';
+      setTimeout(() => {
+        progress.style.width = '0%';
+      }, 50);
+      setTimeout(() => closeFlash(), 3000);
+    });
+  </script>
+
+</body>
+
+</html>

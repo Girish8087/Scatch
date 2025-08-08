@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scatch</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="../images/Scatch.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="/stylesheets/output.css" rel="stylesheet" />
+  <style>
+    .gucci-font {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden relative">
+  <% if (removedfromcart && removedfromcart.length > 0) { %>
+    <% removedfromcart.forEach(cart => { %>
+      <div id="flash"
+        class="fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✅</span>
+            <p class="text-sm font-medium"><%= cart %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <!-- Progress bar -->
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+    <nav
+      class="z-20 bg-white w-full flex items-center justify-between px-6 md:px-10 py-4 border-b-2 fixed top-0 left-0">
+      <h1 class="text-2xl md:text-3xl font-semibold">Cart.</h1>
+
+      <button id="sidebarToggle" class="md:hidden text-2xl focus:outline-none active:scale-95 transition">☰</button>
+
+      <div class="hidden md:flex items-center gap-6 font-semibold">
+        <a class="active:scale-95 transition ease-in" href="/shop">Home</a>
+        <a class="active:scale-95 transition ease-in" href="/shop">Products</a>
+        <div class="flex items-center gap-2">
+          <div
+            class="h-10 w-10 rounded-full overflow-hidden border-2 border-b-cyan-600 active:scale-95 hover:scale-105 transition ease-in">
+            <img class="w-full h-full object-cover"
+              src="https://storyblok-cdn.photoroom.com/f/191576/1200x800/a3640fdc4c/profile_picture_maker_before.webp"
+              alt="" />
+          </div>
+          <a class="active:scale-95 transition ease-in" href="">My account</a>
+        </div>
+        <a href="users/logout"
+          class="px-3 py-1 rounded-md bg-red-600 text-white hover:scale-105 active:scale-95 transition ease-in">
+          Logout <i class="ri-logout-box-r-line font-light"></i>
+        </a>
+      </div>
+    </nav>
+  <div data-scroll-container>
+    <div id="added-items"
+      class="w-full min-h-screen px-4 sm:px-6 py-5 flex flex-col gap-5 md:px-10 mt-[72px] relative">
+      <% if (user.cart.length > 0) { %>
+        <% user.cart.reverse().forEach(c => { %>
+          <div class="w-full flex flex-col lg:flex-row gap-8 shadow-lg rounded-md">
+            <a href="/removefromcart/<%= c._id %>"
+              class="text-red-600 w-fit h-fit block absolute text-sm font-semibold p-2 active:scale-95 transition ease-in">
+              <i class="ri-delete-bin-fill"></i> Remove item
+            </a>
+
+            <div style="color: <%= c.panelcolor %>;"
+              class="w-full lg:w-2/3 border border-zinc-200 flex flex-col">
+              <div class="w-full h-60 sm:h-72 md:h-80 bg-[<%= c.bgcolor %>] overflow-hidden">
+                <img class="w-full h-full object-contain"
+                  src="data:image/jpeg;base64,<%= c.image.toString('base64') %>" alt="" />
+              </div>
+              <div style="color: <%= c.panelcolor %>;"
+                class="w-full flex items-center justify-between px-5 py-3">
+                <h1 style="color: <%= c.textcolor %>;" class="flex font-semibold text-xl">
+                  <%= c.name %>
+                </h1>
+                <div class="flex items-center gap-2">
+                  <button
+                    class="bg-white h-6 w-6 flex items-center justify-center rounded-full active:scale-90 transition ease-in cursor-pointer">
+                    <i class="ri-add-line"></i>
+                  </button>
+                  <div class="w-10 h-6 bg-white flex items-center justify-center rounded-md">1</div>
+                  <button
+                    class="bg-white h-6 w-6 flex items-center justify-center rounded-full active:scale-90 transition ease-in cursor-pointer">
+                    <i class="ri-subtract-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="w-full flex items-center justify-between px-5 py-3 bg-[#C7A697]">
+                <h1 style="color: <%= c.textcolor %>;">Net Total</h1>
+                <p style="color: <%= c.textcolor %>;" class="font-semibold">
+                  <span>$</span><%= c.price %>
+                </p>
+              </div>
+            </div>
+
+            <div class="w-full lg:w-1/3 font-semibold flex flex-col pr-2">
+              <h1 class="text-lg mb-5">Price Breakdown</h1>
+              <div class="flex justify-between mb-2">
+                <span>Total MRP</span>
+                <span>$<%= c.price %></span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span>Discount on MRP</span>
+                <span>₹ <%= c.discount %></span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span>Platform Fee</span>
+                <span>₹20</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Shipping Fee</span>
+                <span class="text-green-600 font-medium">FREE</span>
+              </div>
+
+              <div class="h-px w-full bg-black my-4"></div>
+
+              <div class="flex justify-between mt-4 font-bold">
+                <span>Total Amount</span>
+                <span class="text-green-600 font-medium">
+                  $<%= Number(c.price) + 20 - Number(c.discount) %>
+                </span>
+              </div>
+
+              <button
+                class="px-5 py-2 mt-5 rounded-md bg-black text-white font-semibold cursor-pointer hover:scale-105 active:scale-95 transition ease-in">
+                place order
+              </button>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <h1 class="font-semibold text-gray-500">No items Yet.</h1>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script>
+    function closeFlash() {
+      document.getElementById('flash').classList.add('opacity-0', 'transition', 'duration-500');
+      setTimeout(() => document.getElementById('flash').remove(), 100);
+    }
+
+    // Animate progress bar and auto-remove after 3s
+    window.addEventListener('DOMContentLoaded', () => {
+      let progress = document.getElementById('progress');
+      progress.style.width = '100%';
+      progress.style.transition = 'width 1s linear';
+      setTimeout(() => {
+        progress.style.width = '0%';
+      }, 50);
+
+      setTimeout(() => closeFlash(), 1000);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+        multiplier: 1,
+      });
+    });
+  </script>
+</body>
+
+</html>

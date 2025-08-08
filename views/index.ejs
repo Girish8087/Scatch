@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scatch</title>
+  <link rel="shortcut icon" href="./images/Screenshot 2025-08-07 122545.png" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="/stylesheets/output.css" rel="stylesheet" />
+  <style>
+    .gucci-font {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+
+<body>
+  <% if (exists && exists.length > 0) { %>
+    <% exists.forEach(exist => { %>
+      <div id="flash"
+        class="fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 animate-bounce">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🚫</span>
+            <p class="text-sm font-medium"><%= exist %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <div data-scroll-container>
+    <div class="w-full h-screen flex items-center justify-center bg-white">
+      <div class="w-120 h-screen bg-[#E0E6EC] flex flex-col gap-2 items-start justify-center p-10 shadow-sm">
+        <h1 class="font-bold text-3xl selection:bg-transparent">Welcome to <span
+            class="text-blue-500 gucci-font">Scatch</span></h1>
+        <h5 class="font-semibold text-lg selection:bg-transparent">create your account</h5>
+
+        <form class="flex flex-col gap-4 w-full mt-5" action="/users/register" method="post">
+          <input
+            class="bg-white px-5 py-2 rounded-md block w-full outline-none focus:ring-2 focus:ring-cyan-500 focus:shadow-lg"
+            name="fullname" type="text" placeholder="FullName" />
+          <input
+            class="bg-white px-5 py-2 rounded-md block w-full outline-none focus:ring-2 focus:ring-cyan-500 focus:shadow-lg"
+            name="email" type="text" placeholder="Email" />
+          <input
+            class="bg-white px-5 py-2 rounded-md block w-full outline-none focus:ring-2 focus:ring-cyan-500 focus:shadow-lg"
+            name="password" type="text" placeholder="Password" />
+          <button
+            class="bg-[#0285FF] w-fit text-md font-semibold text-white px-5 py-2 rounded-3xl cursor-pointer hover:scale-105 active:scale-95 transition ease-in selection:bg-transparent">
+            Create My Account
+          </button>
+          <a class="text-sm text-center mt-2 text-[#2874F0] font-semibold" href="/login">
+            ALready have an account? <span class="underline">Login</span>
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+        multiplier: 1,
+      });
+    });
+
+    function closeFlash() {
+      document.getElementById('flash').classList.add('opacity-0', 'transition', 'duration-500');
+      setTimeout(() => document.getElementById('flash').remove(), 500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let progress = document.getElementById('progress');
+      progress.style.width = '100%';
+      progress.style.transition = 'width 3s linear';
+      setTimeout(() => {
+        progress.style.width = '0%';
+      }, 50);
+      setTimeout(() => closeFlash(), 3000);
+    });
+  </script>
+</body>
+
+</html>

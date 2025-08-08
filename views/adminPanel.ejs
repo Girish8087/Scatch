@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scatch</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="../images/Scatch.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css" />
+  <link href="/stylesheets/output.css" rel="stylesheet" />
+  <style>
+    .gucci-font {
+      font-family: 'Playfair Display', serif;
+    }
+
+    #flash {
+      position: fixed;
+      z-index: 9999;
+      /* Tailwind me z-[9999] */
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden relative">
+
+  <% if (owner && owner.length > 0) { %>
+    <% owner.forEach((own) => { %>
+      <div id="flash"
+        class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 animate-bounce z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✅</span>
+            <p class="text-sm font-medium"><%= own %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+
+    <nav
+      class="z-50 bg-white w-full flex items-center justify-between px-6 md:px-10 py-4 border-b-2 fixed top-0 left-0">
+      <h1 class="text-2xl md:text-3xl font-semibold">Admin Panel.</h1>
+
+      <button id="sidebarToggle" class="md:hidden text-2xl focus:outline-none active:scale-95 transition">☰</button>
+
+      <div class="hidden md:flex items-center gap-6 font-semibold">
+        <a class="active:scale-95 transition ease-in" href="/owners/admin">Home</a>
+        <a class="active:scale-95 transition ease-in" href="/owners/admin">Products</a>
+        <div class="flex items-center gap-2">
+          <div
+            class="h-10 w-10 rounded-full overflow-hidden border-2 border-b-cyan-600 active:scale-95 hover:scale-105 transition ease-in">
+            <img class="w-full h-full object-cover"
+              src="https://talkstar-photos.s3.amazonaws.com/uploads/4f1a09bf-6f64-4d33-8290-f4f59d2d81bd/ElonMusk_2017-stageshot.jpg"
+              alt="" />
+          </div>
+          <a class="active:scale-95 transition ease-in" href="">My account</a>
+        </div>
+        <a href="/users/logout"
+          class="px-3 py-1 rounded-md bg-red-600 text-white hover:scale-105 active:scale-95 transition ease-in">
+          Logout <i class="ri-logout-box-r-line font-light"></i>
+        </a>
+      </div>
+    </nav>
+
+    <div id="sidebar"
+      class="fixed top-[72px] left-0 w-64 h-[calc(100vh-72px)] bg-zinc-100 px-6 py-10 flex-col gap-3 text-sm font-semibold transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:flex">
+
+      <a class="font-semibold active:scale-95 transition ease-in <%= page === 'all' ? 'text-black' : 'text-gray-500' %>"
+        href="/owners/admin">All Products</a>
+      <a class="font-semibold active:scale-95 transition ease-in <%= page === 'all' ? 'text-gray-500' : 'text-black' %>"
+        href="/owners/product">Create New Product</a>
+
+    </div>
+
+    <div class="pt-[90px] px-6 md:px-10 md:ml-64 min-h-screen">
+
+      <button
+        class="mb-3 text-red-500 text-sm cursor-pointer active:scale-90 transition ease-in block">Delete All</button>
+
+      <div id="items-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+
+        <% if (products.length > 0) { %>
+          <% products.reverse().forEach((product) => { %>
+            <div class="bg-gray-300 h-90 shadow-md relative hover:scale-101 transition ease-in">
+              <a class="absolute top-2 left-2 text-red-500 text-sm active:scale-90 transition ease-in"
+                href="/owners/removefromcart/<%= product._id %>"><i class="ri-delete-bin-fill"></i></a>
+              <div class="bg-[<%= product.bgcolor %>] w-full h-[70%] p-5">
+                <img class="w-full h-full object-contain"
+                  src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="" />
+              </div>
+              <div style="background-color: <%= product.panelcolor %>;"
+                class="w-full h-[30%] p-5 flex items-center justify-between">
+                <div>
+                  <h1 style="color: <%= product.textcolor %>;" class="text-lg font-semibold"><%= product.name %></h1>
+                  <p style="color: <%= product.textcolor %>;" class="font-semibold">$<%= product.price %>.00</p>
+                </div>
+                <button
+                  class="bg-white h-10 w-10 flex items-center justify-center rounded-full hover:bg-zinc-100 hover:scale-105 transition active:scale-95 cursor-pointer">
+                  <i class="ri-add-line"></i>
+                </button>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <h1 class="font-semibold text-gray-500">No Products Yet.</h1>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script>
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("-translate-x-full");
+    });
+
+    function closeFlash() {
+      const flash = document.getElementById('flash');
+      if (flash) {
+        flash.classList.add('opacity-0', 'transition', 'duration-500');
+        setTimeout(() => flash.remove(), 500);
+      }
+    }
+
+    // Animate progress bar and auto-remove after 3s
+    window.addEventListener('DOMContentLoaded', () => {
+      const progress = document.getElementById('progress');
+      if (progress) {
+        progress.style.width = '100%';
+        progress.style.transition = 'width 3s linear';
+        setTimeout(() => {
+          progress.style.width = '0%';
+        }, 50); // start shrinking after slight delay
+
+        setTimeout(() => closeFlash(), 3000);
+      }
+    });
+
+  </script>
+</body>
+
+</html>

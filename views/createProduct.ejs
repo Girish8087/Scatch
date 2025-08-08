@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scatch</title>
+  <link rel="shortcut icon" href="../images/Scatch.png" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="/stylesheets/output.css" rel="stylesheet" />
+  <style>
+    .gucci-font {
+      font-family: 'Playfair Display', serif;
+    }
+
+    #flash {
+      position: fixed;
+      z-index: 9999;
+      /* Tailwind me z-[9999] */
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden relative">
+  <% if (productcreated && productcreated.length > 0) { %>
+    <% productcreated.forEach(pcreated => { %>
+      <div id="flash"
+        class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">👍</span>
+            <p class="text-sm font-medium"><%= pcreated %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <% if (details && details.length > 0) { %>
+    <% details.forEach(detail => { %>
+      <div id="flash"
+        class="fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white w-80 px-4 py-3 rounded-md shadow-lg flex flex-col gap-2 z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🚫</span>
+            <p class="text-sm font-medium"><%= detail %></p>
+          </div>
+          <button onclick="closeFlash()" class="text-white font-bold text-lg leading-none">&times;</button>
+        </div>
+        <div class="h-1 bg-white/50 relative overflow-hidden rounded">
+          <div id="progress" class="absolute top-0 left-0 h-full bg-white"></div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <div data-scroll-container>
+    <nav
+      class="z-50 bg-white w-full flex items-center justify-between px-6 md:px-10 py-4 border-b-2 fixed top-0 left-0">
+      <h1 class="text-2xl md:text-3xl font-semibold">Admin Panel.</h1>
+
+      <button id="sidebarToggle" class="md:hidden text-2xl focus:outline-none active:scale-95 transition">☰</button>
+
+      <div class="hidden md:flex items-center gap-6 font-semibold">
+        <a class="active:scale-95 transition ease-in" href="/owners/admin">Home</a>
+        <a class="active:scale-95 transition ease-in" href="/owners/admin">Products</a>
+        <div class="flex items-center gap-2">
+          <div
+            class="h-10 w-10 rounded-full overflow-hidden border-2 border-b-cyan-600 active:scale-95 hover:scale-105 transition ease-in">
+            <img class="w-full h-full object-cover"
+              src="https://talkstar-photos.s3.amazonaws.com/uploads/4f1a09bf-6f64-4d33-8290-f4f59d2d81bd/ElonMusk_2017-stageshot.jpg"
+              alt="" />
+          </div>
+          <a class="active:scale-95 transition ease-in" href="">My account</a>
+        </div>
+        <a href="/users/logout"
+          class="px-3 py-1 rounded-md bg-red-600 text-white hover:scale-105 active:scale-95 transition ease-in">
+          Logout <i class="ri-logout-box-r-line font-light"></i>
+        </a>
+      </div>
+    </nav>
+
+    <div id="sidebar"
+      class="fixed top-[72px] left-0 w-64 h-[calc(100vh-72px)] bg-zinc-100 px-6 py-10 flex-col gap-3 text-sm font-semibold transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:flex">
+      <a class="font-semibold active:scale-95 transition ease-in <%= page === 'create' ? 'text-gray-500' : 'text-black' %>"
+        href="/owners/admin">All Products</a>
+      <a class="font-semibold active:scale-95 transition ease-in <%= page === 'create' ? 'text-black' : 'text-gray-500' %>"
+        href="/owners/product">Create New Product</a>
+    </div>
+
+    <div class="pt-[90px] px-6 md:px-10 md:ml-64 min-h-screen">
+      <div class="px-5 py-5 border-b-2 border-zinc-200">
+        <h1 class="text-3xl font-semibold">Create New Product</h1>
+      </div>
+
+      <h1 class="m-5 text-2xl font-semibold">Product Details</h1>
+
+      <form class="flex flex-col gap-3 ml-5" action="/product/create" method="POST" enctype="multipart/form-data">
+        <div>
+          <input type="file" id="fileInput" name="image" class="hidden" />
+          <label for="fileInput"
+            class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <i class="ri-upload-2-line mr-2"></i> Product Image
+          </label>
+          <button type="submit"
+            class="ml-4 bg-green-600 text-white px-4 py-2 rounded-3xl hover:bg-green-700 cursor-pointer">Submit</button>
+        </div>
+
+        <input class="bg-zinc-100 px-5 py-2 rounded-md block w-111 outline-none" type="text" name="name"
+          placeholder="Product Name" />
+
+        <div>
+          <input class="bg-zinc-100 px-5 py-2 rounded-md outline-none" type="text" placeholder="Product Price"
+            name="price" />
+          <input class="bg-zinc-100 px-5 py-2 rounded-md outline-none" type="text" placeholder="Discout Price"
+            name="discount" />
+        </div>
+
+        <label class="text-2xl font-semibold mt-10" for="">Panel Details</label>
+
+        <div>
+          <input class="bg-zinc-100 px-5 py-2 rounded-md outline-none" type="text" placeholder="Background Color"
+            name="bgcolor" />
+          <input class="bg-zinc-100 px-5 py-2 rounded-md outline-none" type="text" placeholder="Panel Color"
+            name="panelcolor" />
+        </div>
+
+        <input class="bg-zinc-100 px-5 py-2 rounded-md outline-none w-111" type="text" placeholder="Text Color"
+          name="textcolor" />
+
+        <div class="flex gap-2 items-center">
+          <p class="font-semibold">Pick Color :</p>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="colorPreview"
+              style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff0000; cursor: pointer; border: 1px solid #ccc;">
+            </div>
+            <input type="color" id="colorPicker" value="#ff0000" style="display: none;" />
+            <input class="outline-none border border-zinc-300 rounded-md" type="text" id="colorCode" value="#ff0000"
+              style="width: 100px; padding: 5px;" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script>
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("-translate-x-full");
+    });
+
+    function closeFlash() {
+      document.getElementById('flash').classList.add('opacity-0', 'transition', 'duration-500');
+      setTimeout(() => document.getElementById('flash').remove(), 500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let progress = document.getElementById('progress');
+      progress.style.width = '100%';
+      progress.style.transition = 'width 3s linear';
+      setTimeout(() => {
+        progress.style.width = '0%';
+      }, 50);
+
+      setTimeout(() => closeFlash(), 3000);
+    });
+
+    const colorPreview = document.getElementById('colorPreview');
+    const colorPicker = document.getElementById('colorPicker');
+    const colorCode = document.getElementById('colorCode');
+
+    colorPreview.addEventListener('click', () => {
+      colorPicker.click();
+    });
+
+    colorPicker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      colorPreview.style.backgroundColor = color;
+      colorCode.value = color;
+    });
+
+    colorCode.addEventListener('input', (e) => {
+      let val = e.target.value;
+      if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
+        colorPreview.style.backgroundColor = val;
+        colorPicker.value = val;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+        multiplier: 1,
+      });
+    });
+  </script>
+</body>
+
+</html>
